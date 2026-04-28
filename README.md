@@ -27,7 +27,7 @@ The page is designed to let you enter a founder name and email, display the rele
 1. Commit `index.html` to the repository.
 2. In your GitHub repo settings, enable GitHub Pages.
 3. Set the source to the `main` branch and root (`/`).
-4. The page will be available at `https://<your-username>.github.io/<repo-name>/`.
+4. The page will be available at `https://mayukhaarn.github.io/applied-ai-system-project/`.
 
 ## Limitations
 

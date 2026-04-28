@@ -11,6 +11,10 @@
     h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
     p.lead { margin: 0; color: #4b5563; max-width: 740px; }
     .panel { background: white; border: 1px solid #e5e7eb; border-radius: 24px; padding: 28px; box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08); margin-top: 24px; }
+    .brand-header { display: flex; gap: 16px; align-items: center; padding: 18px 20px; border-radius: 20px; background: #eef2ff; border: 1px solid #c7d2fe; margin-bottom: 22px; }
+    .brand-logo { display: block; width: 40px; height: 40px; object-fit: contain; }
+    .brand-title { margin: 0; font-size: 1.05rem; font-weight: 700; color: #1e3a8a; }
+    .brand-copy { margin: 4px 0 0; color: #334155; line-height: 1.55; }
     .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
     label { display: block; margin-bottom: 8px; font-size: 0.95rem; color: #374151; }
     input, textarea, select { width: 100%; max-width: 460px; border: 1px solid #d1d5db; border-radius: 14px; padding: 12px 14px; font-size: 1rem; color: #111827; background: #f9fafb; box-sizing: border-box; }
@@ -39,6 +43,13 @@
     </div>
 
     <div class="panel">
+      <div class="brand-header">
+        <img class="brand-logo" src="https://fi.co/assets/logo_plain-eb88d2988068de2be10d2a3f98573db2d73d6310a997e30776e8a869ca5a475.png" alt="Founder Institute logo" />
+        <div>
+          <p class="brand-title">About Founder Institute</p>
+          <p class="brand-copy">Founder Institute is the world's largest pre-seed accelerator, helping early-stage founders turn ideas into fundable startups through mentor-driven structure, global community, and proven programming.</p>
+        </div>
+      </div>
       <div class="grid">
         <div class="card">
           <h2>Founder lookup</h2>
