@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fi.co Homework Review Dashboard</title>
+  <style>
+    body { margin: 0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif; background: #f3f4f6; color: #111827; }
+    .page { max-width: 980px; margin: 0 auto; padding: 36px 24px; }
+    .hero { display: grid; gap: 16px; }
+    h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+    p.lead { margin: 0; color: #4b5563; max-width: 740px; }
+    .panel { background: white; border: 1px solid #e5e7eb; border-radius: 24px; padding: 28px; box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08); margin-top: 24px; }
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    label { display: block; margin-bottom: 8px; font-size: 0.95rem; color: #374151; }
+    input, textarea, select { width: 100%; border: 1px solid #d1d5db; border-radius: 14px; padding: 12px 14px; font-size: 1rem; color: #111827; background: #f9fafb; }
+    textarea { min-height: 120px; resize: vertical; }
+    .button { border: 0; border-radius: 14px; padding: 14px 20px; cursor: pointer; font-size: 1rem; font-weight: 600; background: #4338ca; color: white; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .button:disabled { background: #c7d2fe; cursor: not-allowed; }
+    .button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(67, 56, 202, 0.18); }
+    .status { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 999px; font-size: 0.95rem; background: #eef2ff; color: #1d4ed8; border: 1px solid #c7d2fe; }
+    .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 18px; padding: 20px; }
+    .card h2 { margin-top: 0; font-size: 1.05rem; }
+    .fields { display: grid; gap: 12px; }
+    .field-row { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    .field-row > div { min-width: 0; }
+    .note { margin-top: 16px; font-size: 0.95rem; color: #6b7280; }
+    .footer { margin-top: 42px; color: #6b7280; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <div>
+        <h1>fi.co Homework Review Dashboard</h1>
+        <p class="lead">Enter a founder name and email to load the review form. The page will present the relevant homework fields, enable final edits, and allow you to send the reviewed homework email.</p>
+      </div>
+      <div class="status">Static GitHub Pages demo — sample workflow only</div>
+    </div>
+
+    <div class="panel">
+      <div class="grid">
+        <div class="card">
+          <h2>Founder lookup</h2>
+          <div class="fields">
+            <div>
+              <label for="founderName">Founder name</label>
+              <input id="founderName" type="text" placeholder="e.g. Alex Johnson" />
+            </div>
+            <div>
+              <label for="founderEmail">Founder email</label>
+              <input id="founderEmail" type="email" placeholder="e.g. alex@startup.com" />
+            </div>
+          </div>
+          <p class="note">If the founder exists in sample data, the review fields will populate automatically. Otherwise, fill them manually.</p>
+        </div>
+
+        <div class="card">
+          <h2>Review status</h2>
+          <div id="lookupResult">Enter name and email to see review details.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="reviewPanel" style="display:none;">
+      <h2>Review information</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="fields">
+            <div>
+              <label for="company">Company</label>
+              <input id="company" type="text" />
+            </div>
+            <div>
+              <label for="status">Submission status</label>
+              <select id="status">
+                <option>Submitted</option>
+                <option>Missing</option>
+              </select>
+            </div>
+            <div>
+              <label for="completeness">Completeness</label>
+              <input id="completeness" type="number" min="0" max="10" />
+            </div>
+            <div>
+              <label for="effort">Effort</label>
+              <input id="effort" type="number" min="0" max="10" />
+            </div>
+            <div>
+              <label for="originality">Originality</label>
+              <input id="originality" type="number" min="0" max="10" />
+            </div>
+            <div>
+              <label for="letterGrade">Letter grade</label>
+              <input id="letterGrade" type="text" />
+            </div>
+            <div>
+              <label for="aiLikely">AI likely?</label>
+              <select id="aiLikely"><option>No</option><option>Yes</option></select>
+            </div>
+            <div>
+              <label for="totalScore">Total score</label>
+              <input id="totalScore" type="number" min="0" max="30" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Review summary</h2>
+          <div class="fields">
+            <div>
+              <label for="summary">Summary sentence</label>
+              <textarea id="summary" placeholder="e.g. Strong submission with clear reasoning and user focus."></textarea>
+            </div>
+            <div>
+              <label for="strengths">Strengths</label>
+              <textarea id="strengths" placeholder="List the key strengths in bullet form."></textarea>
+            </div>
+            <div>
+              <label for="improvements">Improvements</label>
+              <textarea id="improvements" placeholder="List the key areas for improvement."></textarea>
+            </div>
+            <div>
+              <label for="messagePreview">Email preview</label>
+              <textarea id="messagePreview" readonly></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+        <button class="button" id="sendButton" disabled>Send reviewed homework</button>
+        <div id="sendStatus" style="color:#065f46; font-weight:600;"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Note: this page is a static GitHub Pages interface. Actual email delivery requires a backend integration with your workflow engine or Python CRM system.</p>
+    </div>
+  </div>
+
+  <script>
+    const founders = [
+      {
+        name: "Alex Johnson",
+        email: "alex@startup.com",
+        company: "Pulse Labs",
+        status: "Submitted",
+        completeness: 9,
+        effort: 8,
+        originality: 7,
+        total: 24,
+        letterGrade: "B+",
+        aiLikely: "No",
+        summary: "Good, clear answers with strong product focus.",
+        strengths: "- Clear problem statement\n- Well-defined metrics",
+        improvements: "- Add more customer detail\n- Clarify distribution plan"
+      },
+      {
+        name: "Priya Patel",
+        email: "priya@greenflow.co",
+        company: "GreenFlow",
+        status: "Submitted",
+        completeness: 10,
+        effort: 9,
+        originality: 8,
+        total: 27,
+        letterGrade: "A-",
+        aiLikely: "No",
+        summary: "Excellent submission with strong founder insight.",
+        strengths: "- Deep user empathy\n- Strong traction evidence",
+        improvements: "- Add bigger growth milestones\n- Tighten the fundraising ask"
+      }
+    ];
+
+    const elements = {
+      founderName: document.getElementById('founderName'),
+      founderEmail: document.getElementById('founderEmail'),
+      lookupResult: document.getElementById('lookupResult'),
+      reviewPanel: document.getElementById('reviewPanel'),
+      company: document.getElementById('company'),
+      status: document.getElementById('status'),
+      completeness: document.getElementById('completeness'),
+      effort: document.getElementById('effort'),
+      originality: document.getElementById('originality'),
+      letterGrade: document.getElementById('letterGrade'),
+      aiLikely: document.getElementById('aiLikely'),
+      totalScore: document.getElementById('totalScore'),
+      summary: document.getElementById('summary'),
+      strengths: document.getElementById('strengths'),
+      improvements: document.getElementById('improvements'),
+      messagePreview: document.getElementById('messagePreview'),
+      sendButton: document.getElementById('sendButton'),
+      sendStatus: document.getElementById('sendStatus')
+    };
+
+    function normalize(value) {
+      return value.trim().toLowerCase();
+    }
+
+    function buildPreview() {
+      const name = elements.founderName.value.trim();
+      const email = elements.founderEmail.value.trim();
+      if (!name || !email) {
+        elements.messagePreview.value = '';
+        return;
+      }
+
+      elements.messagePreview.value = `Hi ${name},\n\n` +
+        `Thanks for submitting your homework for ${elements.company.value || 'your company'}. ` +
+        `I've reviewed your submission and assigned a ${elements.letterGrade.value} score (${elements.totalScore.value}/30).\n\n` +
+        `Summary: ${elements.summary.value}\n\n` +
+        `Strengths:\n${elements.strengths.value}\n\n` +
+        `Improvements:\n${elements.improvements.value}\n\n` +
+        `If you'd like, I can follow up with more detail on the AI insights and the next steps.\n\n` +
+        `Best,\nThe fi.co team`;
+    }
+
+    function updateSendButton() {
+      const valid = elements.founderName.value.trim() && elements.founderEmail.value.trim() && elements.summary.value.trim();
+      elements.sendButton.disabled = !valid;
+    }
+
+    function populateFields(data) {
+      elements.company.value = data.company || '';
+      elements.status.value = data.status || 'Submitted';
+      elements.completeness.value = data.completeness || 0;
+      elements.effort.value = data.effort || 0;
+      elements.originality.value = data.originality || 0;
+      elements.letterGrade.value = data.letterGrade || '';
+      elements.aiLikely.value = data.aiLikely || 'No';
+      elements.totalScore.value = data.total || 0;
+      elements.summary.value = data.summary || '';
+      elements.strengths.value = data.strengths || '';
+      elements.improvements.value = data.improvements || '';
+      buildPreview();
+      updateSendButton();
+    }
+
+    function clearFields() {
+      elements.company.value = '';
+      elements.status.value = 'Submitted';
+      elements.completeness.value = 0;
+      elements.effort.value = 0;
+      elements.originality.value = 0;
+      elements.letterGrade.value = '';
+      elements.aiLikely.value = 'No';
+      elements.totalScore.value = 0;
+      elements.summary.value = '';
+      elements.strengths.value = '';
+      elements.improvements.value = '';
+      elements.messagePreview.value = '';
+      updateSendButton();
+    }
+
+    function showReviewPanel() {
+      elements.reviewPanel.style.display = 'block';
+    }
+
+    function findFounder() {
+      const name = normalize(elements.founderName.value);
+      const email = normalize(elements.founderEmail.value);
+      if (!name || !email) {
+        elements.lookupResult.textContent = 'Enter both founder name and email to lookup or review a submission.';
+        elements.reviewPanel.style.display = 'none';
+        return;
+      }
+
+      const match = founders.find(item => normalize(item.name) === name || normalize(item.email) === email);
+      if (match) {
+        elements.lookupResult.innerHTML = `<strong>Founder found:</strong> ${match.name} — ${match.email} (${match.company})`;
+        populateFields(match);
+        showReviewPanel();
+      } else {
+        elements.lookupResult.innerHTML = `<strong>No matching founder found.</strong> You can enter review details manually below.`;
+        clearFields();
+        showReviewPanel();
+      }
+    }
+
+    ['founderName', 'founderEmail'].forEach(id => {
+      elements[id].addEventListener('input', findFounder);
+    });
+
+    ['company','status','completeness','effort','originality','letterGrade','aiLikely','totalScore','summary','strengths','improvements'].forEach(id => {
+      elements[id].addEventListener('input', () => {
+        buildPreview();
+        updateSendButton();
+      });
+    });
+
+    elements.sendButton.addEventListener('click', () => {
+      const founderName = elements.founderName.value.trim();
+      const founderEmail = elements.founderEmail.value.trim();
+      if (!founderName || !founderEmail) {
+        return;
+      }
+      elements.sendStatus.textContent = `Reviewed homework ready to send to ${founderName} <${founderEmail}>.`;
+      elements.sendButton.textContent = 'Sent';
+      elements.sendButton.disabled = true;
+    });
+  </script>
+</body>
+</html>
