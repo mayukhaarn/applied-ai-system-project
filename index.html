@@ -110,6 +110,14 @@
               <select id="aiLikely"><option>No</option><option>Yes</option></select>
             </div>
             <div>
+              <label for="letterTone">Letter tone</label>
+              <select id="letterTone">
+                <option value="professional">Professional</option>
+                <option value="firm">Firm</option>
+                <option value="calm">Calm</option>
+              </select>
+            </div>
+            <div>
               <label for="totalScore">Total score</label>
               <input id="totalScore" type="number" min="0" max="30" />
             </div>
@@ -196,6 +204,7 @@
       originality: document.getElementById('originality'),
       letterGrade: document.getElementById('letterGrade'),
       aiLikely: document.getElementById('aiLikely'),
+      letterTone: document.getElementById('letterTone'),
       totalScore: document.getElementById('totalScore'),
       summary: document.getElementById('summary'),
       strengths: document.getElementById('strengths'),
@@ -217,13 +226,32 @@
         return;
       }
 
+      const tone = elements.letterTone.value;
+      const tonePhrases = {
+        professional: {
+          intro: "I've completed a professional review of your submission and provided clear, constructive feedback.",
+          closing: "Please let me know if you'd like a follow-up with additional guidance.",
+        },
+        firm: {
+          intro: "This review highlights the areas that need immediate attention and concrete improvement.",
+          closing: "Take these recommendations seriously and update the submission accordingly.",
+        },
+        calm: {
+          intro: "I’ve reviewed your homework in a calm, supportive way and shared thoughtful observations.",
+          closing: "If you'd like, I’m happy to help with the next steps at a steady pace.",
+        },
+      };
+
+      const phrases = tonePhrases[tone] || tonePhrases.professional;
+
       elements.messagePreview.value = `Hi ${name},\n\n` +
+        `${phrases.intro} ` +
         `Thanks for submitting your homework for ${elements.company.value || 'your company'}. ` +
-        `I've reviewed your submission and assigned a ${elements.letterGrade.value} score (${elements.totalScore.value}/30).\n\n` +
+        `I assigned a ${elements.letterGrade.value} score (${elements.totalScore.value}/30).\n\n` +
         `Summary: ${elements.summary.value}\n\n` +
         `Strengths:\n${elements.strengths.value}\n\n` +
         `Improvements:\n${elements.improvements.value}\n\n` +
-        `If you'd like, I can follow up with more detail on the AI insights and the next steps.\n\n` +
+        `${phrases.closing}\n\n` +
         `Best,\nThe fi.co team`;
     }
 
@@ -256,6 +284,7 @@
       elements.originality.value = 0;
       elements.letterGrade.value = '';
       elements.aiLikely.value = 'No';
+      elements.letterTone.value = 'professional';
       elements.totalScore.value = 0;
       elements.summary.value = '';
       elements.strengths.value = '';
@@ -293,7 +322,7 @@
       elements[id].addEventListener('input', findFounder);
     });
 
-    ['company','status','completeness','effort','originality','letterGrade','aiLikely','totalScore','summary','strengths','improvements'].forEach(id => {
+    ['company','status','completeness','effort','originality','letterGrade','aiLikely','letterTone','totalScore','summary','strengths','improvements'].forEach(id => {
       elements[id].addEventListener('input', () => {
         buildPreview();
         updateSendButton();
