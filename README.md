@@ -43,6 +43,7 @@ A project overview presentation is available here:
 
 ```text
 https://gamma.app/docs/FI-Homework-Review-Codebase-Overview-7r0vxdimy8cq9a6
+```
 
 ## Project Structure
 
