@@ -1,79 +1,129 @@
 # fi.co Homework Review Dashboard
 
-This repository now includes a GitHub Pages-ready static interface at `index.html`.
-The page is designed to let you enter a founder name and email, display the relevant review data, and "send" reviewed homework from the browser.
+This project is based on the original fi.co Homework Review Dashboard concept from Modules 1-3. The initial goal was to build a reliable, accelerator-focused homework grading system that could collect founder submissions, produce consistent scoring, and enable review-ready feedback.
 
-## What is included
+## Title and Summary
 
-- `index.html` — static dashboard for GitHub Pages
-- `README.md` — documentation and deployment instructions
-- Existing `fi_*.py` modules are untouched and remain in the repo
+### fi.co Homework Review Dashboard
 
-## How the page works
+A modular AI-driven solution for founder homework review that separates context retrieval, response generation, and output evaluation. This architecture matters because it makes risk assessment and human review explicit, which is critical for operational workflows where AI-generated assessments must be trusted and audited.
 
-1. Enter founder name and email.
-2. If the founder exists in the sample dataset, the review fields populate automatically.
-3. If the founder is not found, fill in the review fields manually.
-4. The preview updates automatically.
-5. Click **Send reviewed homework** to mark the review as ready to send.
+## Architecture Overview
 
-## Sample founder data included
+The system is architected as a four-stage pipeline:
 
-- `Alex Johnson` — `alex@startup.com`
-- `Priya Patel` — `priya@greenflow.co`
+1. **Retriever**: Gathers or simulates contextual information for the user query.
+2. **Agent**: Processes the query together with retrieved context and generates a raw response.
+3. **Evaluator**: Assesses the response for confidence and hallucination risk, and decides whether manual review is needed.
+4. **Output**: Returns a structured result containing the final answer and evaluation metadata.
 
-## Deploying on GitHub Pages
+This is implemented in the repository as:
 
-1. Commit `index.html` to the repository.
-2. In your GitHub repo settings, enable GitHub Pages.
-3. Set the source to the `main` branch and root (`/`).
-4. The page will be available at `https://mayukhaarn.github.io/applied-ai-system-project/`.
+- `main.py` — entry point and pipeline coordinator
+- `ai_system/retriever.py` — context retrieval layer
+- `ai_system/agent.py` — response generation layer
+- `ai_system/evaluator.py` — quality and risk evaluation layer
 
-## Limitations
-
-- This is a static page and does not send actual emails.
-- The review workflow is a front-end prototype to demonstrate the user flow.
-- For real email delivery, a backend service is required.
-
-## Local preview
-
-You can preview the page locally by opening `index.html` in a browser, or run a simple local server:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then navigate to:
+The data flow is explicit:
 
 ```text
-http://localhost:8000/index.html
+User Query -> Retriever -> Agent -> Evaluator -> Output
 ```
 
-## Suggested next steps
+## Setup Instructions
 
-- Connect the static dashboard to a backend API for real data lookup.
-- Wire the "Send reviewed homework" button to an email service.
-- Add an actual founder roster and homework submission database.
+### Prerequisites
 
-## Influence and comparison
+- Python 3.11 or newer
+- A terminal or shell environment
 
-This codebase is influenced by the modular, agent-style architecture found in the BugHound starter repository at `https://github.com/mayukhaarn/ai110-module5tinker-bughound-starter`.
+### Install and validate
 
-### Shared architectural ideas
+```bash
+cd /path/to/applied-ai-system-project
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m py_compile main.py ai_system/retriever.py ai_system/agent.py ai_system/evaluator.py
+```
 
-- Modular components that separate retrieval, reasoning, and evaluation.
-- A workflow that chains together a context retriever, a decision-making agent, and a validation/evaluator stage.
-- A human-in-the-loop mindset: the evaluator flags uncertain or risky outputs for manual review.
-- A focus on a clean pipeline rather than a single monolithic script.
+### Run the system
 
-### Key differences
+```bash
+python3 main.py
+```
 
-- This repository is built around a homework tracking and review workflow for `fi.co`, not a Python bug repair assistant.
-- It uses `fi_*` scraper, grading, sheets, and email modules, whereas BugHound focuses on code analysis, LLM-based fix generation, and risk scoring.
-- The current repo includes a static GitHub Pages demo UI in `index.html`; BugHound uses a Streamlit app and a more interactive debugging experience.
-- This project is domain-specific to founder homework grading and reporting, while BugHound is a reusable tool for analyzing and patching Python snippets.
-- The external repo also places more emphasis on offline heuristics, reliability tests, and model fallback handling; this repo currently emphasizes integration with Google Sheets, email delivery, and a sample front-end prototype.
+Then enter a query when prompted.
 
-### Why this matters
+## Live Demo
 
-The influence is conceptual rather than literal: the current project borrows the idea of a staged pipeline and review guardrails, but it is adapted to a different problem space and a different deployment style.
+A GitHub Pages preview is available at:
+
+```text
+https://mayukhaarn.github.io/applied-ai-system-project/
+```
+
+## Sample Interactions
+
+### Example 1
+
+**Input:**
+```text
+Summarize the Founder Institute mission.
+```
+
+**Output:**
+```text
+Answer: Generated response for: Summarize the Founder Institute mission.
+Confidence: 0.78
+Hallucination score: 0.15
+Manual review required: False
+```
+
+### Example 2
+
+**Input:**
+```text
+How should we evaluate accelerator homework submissions?
+```
+
+**Output:**
+```text
+Answer: Generated response for: How should we evaluate accelerator homework submissions?
+Confidence: 0.78
+Hallucination score: 0.15
+Manual review required: False
+```
+
+### Example 3
+
+**Input:**
+```text
+What should trigger a manual review in the AI workflow?
+```
+
+**Output:**
+```text
+Answer: Generated response for: What should trigger a manual review in the AI workflow?
+Confidence: 0.78
+Hallucination score: 0.15
+Manual review required: False
+```
+
+> Note: These sample outputs describe the current placeholder implementation. Real model integration will change results and confidence behavior.
+
+## Design Decisions
+
+- **Modular architecture**: Separating `Retriever`, `Agent`, and `Evaluator` enables independent testing, clearer responsibilities, and easier future replacement of individual stages.
+- **Explicit pipeline flow**: `main.py` orchestrates the sequence so the system remains understandable and debuggable.
+- **Low-dependency prototype**: The current implementation uses plain Python and placeholder logic, which reduces setup friction while preserving the intended architecture.
+- **Human-in-the-loop safety**: The evaluator flags low-confidence or high-hallucination responses for manual review, which is a practical safety mechanism for AI-assisted workflows.
+
+## Testing Summary
+
+- **What worked**: The pipeline compiles successfully and the staged flow is implemented cleanly. Syntax checks passed for `main.py` and all `ai_system` modules.
+- **What failed**: There is no live model integration in the current code, so outputs are simulated rather than generated by a production AI model. That means the system cannot yet validate real-world response quality.
+- **Lessons learned**: Building the architecture first makes later integration straightforward, and a clear evaluator stage is essential for trustworthy AI behavior.
+
+## Project Reflection
+
+This project reinforced the value of modular design in AI systems: separating retrieval, generation, and evaluation reduces complexity and makes it easier to reason about risk, implement guardrails, and add human review when needed.
