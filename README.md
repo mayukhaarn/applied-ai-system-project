@@ -2,8 +2,6 @@
 
 This project is based on the original fi.co Homework Review Dashboard concept from Modules 1-3. The initial goal was to build a reliable, accelerator-focused homework grading system that could collect founder submissions, produce consistent scoring, and enable review-ready feedback.
 
-**Loom video (placeholder):** https://www.loom.com/share/your-video-link-here
-
 ## Title and Summary
 
 ### fi.co Homework Review Dashboard
@@ -31,6 +29,20 @@ The data flow is explicit:
 ```text
 User Query -> Retriever -> Agent -> Evaluator -> Output
 ```
+## Live Demo
+
+A GitHub Pages preview is available at:
+
+```text
+https://mayukhaarn.github.io/applied-ai-system-project/
+```
+
+## Presentation
+
+A project overview presentation is available here:
+
+```text
+https://gamma.app/docs/FI-Homework-Review-Codebase-Overview-7r0vxdimy8cq9a6
 
 ## Project Structure
 
@@ -65,20 +77,6 @@ python3 main.py
 
 Then enter a query when prompted.
 
-## Live Demo
-
-A GitHub Pages preview is available at:
-
-```text
-https://mayukhaarn.github.io/applied-ai-system-project/
-```
-
-## Presentation
-
-A project overview presentation is available here:
-
-```text
-https://gamma.app/docs/FI-Homework-Review-Codebase-Overview-7r0vxdimy8cq9a6
 ```
 
 ## Sample Interactions
