@@ -73,6 +73,14 @@ A GitHub Pages preview is available at:
 https://mayukhaarn.github.io/applied-ai-system-project/
 ```
 
+## Presentation
+
+A project overview presentation is available here:
+
+```text
+https://gamma.app/docs/FI-Homework-Review-Codebase-Overview-7r0vxdimy8cq9a6
+```
+
 ## Sample Interactions
 
 ### Example 1
