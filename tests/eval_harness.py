@@ -4,7 +4,12 @@ This script executes predefined queries against the main pipeline and applies
 simple validity checks to each response.
 """
 import logging
+import sys
+from pathlib import Path
 from typing import List, Tuple
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT_DIR))
 
 from main import run
 
